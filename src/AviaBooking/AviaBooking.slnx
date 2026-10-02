@@ -1,1 +1,7 @@
-<Solution />
+<Solution>
+  <Project Path="../AviaBooking.Api/AviaBooking.Api.csproj" />
+  <Project Path="../AviaBooking.Core/AviaBooking.Core.csproj" />
+  <Project Path="../AviaBooking.Data/AviaBooking.Data.csproj" />
+  <Project Path="../AviaBooking.Services/AviaBooking.Services.csproj" />
+  <Project Path="../AviaBooking.Tests/AviaBooking.Tests.csproj" />
+</Solution>
