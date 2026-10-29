@@ -1,12 +1,12 @@
 using AviaBooking.Data.Context;
 using Microsoft.EntityFrameworkCore;
-
+using System.Threading.Tasks;
 
 namespace AviaBooking.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +14,6 @@ namespace AviaBooking.Api
 
             builder.Services.AddControllers();
 
-            
-            
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             
             builder.Services.AddEndpointsApiExplorer();
@@ -25,6 +23,12 @@ namespace AviaBooking.Api
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AviaBooking.Data.Context.AppDbContext>();
+                await AviaBooking.Data.Seed.DbSeeder.SeedAsync(context);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
