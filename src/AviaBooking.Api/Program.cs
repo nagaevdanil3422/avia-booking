@@ -27,7 +27,7 @@ namespace AviaBooking.Api
 
             builder.Services.AddScoped<IUnitOfWork,  UnitOfWork>();
 
-            builder.Services.AddScoped<IFlightsService, IFlightsService>();
+            builder.Services.AddScoped<IFlightService, FlightService>();
 
             var app = builder.Build();
 
