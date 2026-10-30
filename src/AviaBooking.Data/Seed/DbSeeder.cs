@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AviaBooking.Core.Entities;
+using AviaBooking.Core.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace AviaBooking.Data.Seed
 {
@@ -21,7 +24,7 @@ namespace AviaBooking.Data.Seed
             await context.Database.MigrateAsync();
             
             //если страны уже есть то ен добавляем их заново
-            if (context.Countries.AnyAsync())
+            if (await context.Countries.AnyAsync())
             {
                 return;
             }
@@ -34,7 +37,7 @@ namespace AviaBooking.Data.Seed
             await SeedFlightsAsync(context);
             await SeedUsersAsync(context);
 
-            await context.SaveChangesAsync(context);
+            await context.SaveChangesAsync();
         }
         private static async Task SeedCountriesAndCitiesAsync(AppDbContext context)
         {
@@ -68,12 +71,12 @@ namespace AviaBooking.Data.Seed
 
             var airports = new List<Airport>
         {
-            new() { IataCode = "SVO", Name = "Шереметьево", CityId = moscow.Id },
-            new() { IataCode = "DME", Name = "Домодедово", CityId = moscow.Id },
-            new() { IataCode = "LED", Name = "Пулково", CityId = spb.Id },
-            new() { IataCode = "AER", Name = "Адлер", CityId = sochi.Id },
-            new() { IataCode = "JFK", Name = "Джона Кеннеди", CityId = newYork.Id },
-            new() { IataCode = "BER", Name = "Бранденбург", CityId = berlin.Id }
+            new() { lataCode = "SVO", Name = "Шереметьево", CityId = moscow.Id },
+            new() { lataCode = "DME", Name = "Домодедово", CityId = moscow.Id },
+            new() { lataCode = "LED", Name = "Пулково", CityId = spb.Id },
+            new() { lataCode = "AER", Name = "Адлер", CityId = sochi.Id },
+            new() { lataCode = "JFK", Name = "Джона Кеннеди", CityId = newYork.Id },
+            new() { lataCode = "BER", Name = "Бранденбург", CityId = berlin.Id }
         };
 
             context.Airports.AddRange(airports);
@@ -123,10 +126,10 @@ namespace AviaBooking.Data.Seed
             var boeing = await context.Aircrafts.FirstAsync(a => a.Model == "Boeing 737-800");
             var airbus = await context.Aircrafts.FirstAsync(a => a.Model == "Airbus A320neo");
 
-            var svo = await context.Airports.FirstAsync(a => a.IataCode == "SVO");
-            var led = await context.Airports.FirstAsync(a => a.IataCode == "LED");
-            var aer = await context.Airports.FirstAsync(a => a.IataCode == "AER");
-            var jfk = await context.Airports.FirstAsync(a => a.IataCode == "JFK");
+            var svo = await context.Airports.FirstAsync(a => a.lataCode == "SVO");
+            var led = await context.Airports.FirstAsync(a => a.lataCode == "LED");
+            var aer = await context.Airports.FirstAsync(a => a.lataCode == "AER");
+            var jfk = await context.Airports.FirstAsync(a => a.lataCode == "JFK");
 
             var flights = new List<Flight>
         {
@@ -183,7 +186,7 @@ namespace AviaBooking.Data.Seed
                 PasswordHash = "TEMP_HASH_BCRYPT", // Позже заменим на реальный хеш
                 FirstName = "Данила",
                 LastName = "Нагаев",
-                Role = UserRole.Admin,
+                UserRole = UserRole.Admin,
                 CreatedAt = DateTime.UtcNow
             },
             new()
@@ -192,7 +195,7 @@ namespace AviaBooking.Data.Seed
                 PasswordHash = "TEMP_HASH_BCRYPT",
                 FirstName = "Иван",
                 LastName = "Иванов",
-                Role = UserRole.User,
+                UserRole = UserRole.User,
                 CreatedAt = DateTime.UtcNow
             }
         };

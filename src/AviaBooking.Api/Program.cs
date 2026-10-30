@@ -1,4 +1,6 @@
+using AviaBooking.Core.Interfaces;
 using AviaBooking.Data.Context;
+using AviaBooking.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -21,6 +23,8 @@ namespace AviaBooking.Api
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IUnitOfWork,  UnitOfWork>();
 
             var app = builder.Build();
 
